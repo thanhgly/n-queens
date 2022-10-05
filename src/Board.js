@@ -165,12 +165,45 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+
+    /*
+
+
+    this.attributes = {
+      0:[0, 0, 0, 0],
+      1:[0, 0, 0, 0],
+      2:[0, 0, 0, 0],
+      3:[0, 0, 0, 0]
+    }
+
+    */
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+      var count = 0;
+      var column = majorDiagonalColumnIndexAtFirstRow;
+      for (var i = 0; i < this.attributes.n; i++) {
+        if (column >= 0) {
+          if (this.attributes[i][column] === 1) {
+            count++;
+          }
+        }
+        column++;
+      }
+      if (count > 1) {
+        return true;
+      }
       return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      var conflicts = false;
+      for (var i = -(this.attributes.n); i < this.attributes.n; i++) {
+        conflicts = this.hasMajorDiagonalConflictAt(i);
+        if (conflicts) {
+          return conflicts;
+        }
+      }
+
       return false; // fixme
     },
 
@@ -181,11 +214,39 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+
+      var count = 0;
+      var column = minorDiagonalColumnIndexAtFirstRow;
+
+      for (var x = 0; x < this.attributes.n; x++) {
+        if (column <= this.attributes[0].length - 1) {
+          if (this.attributes[x][column] === 1) {
+            count++;
+          }
+        }
+        column--;
+      }
+      if (count > 1) {
+        return true;
+      }
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+
+      var conflicts = false;
+
+      for (var x = (this.attributes.n) * 2; x > this.attributes.n; x--) {
+
+        conflicts = this.hasMinorDiagonalConflictAt(x);
+
+        if (conflicts) {
+          return conflicts;
+        }
+      }
+
+
       return false; // fixme
     }
 
