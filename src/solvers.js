@@ -70,17 +70,67 @@ window.countNRooksSolutions = function(n) {
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
+/*
+[1,0,0,0],
+[0,0,1,0],
+[0,0,0,0], x
+[0,0,0,0]
+*/
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
 
+  var solution = new Board({n: n}); //fixme
 
+  var findSolution = function(board, row) {
+
+    if (row === board.attributes.n) {
+
+      return true;
+    }
+
+    for (var x = 0; x < board.attributes.n; x++) {
+      board.togglePiece(row, x);
+      if (!(board.hasAnyQueensConflicts())) {
+        if (findSolution(board, row + 1)) {
+          return true;
+        }
+      }
+      board.togglePiece(row, x);
+
+    }
+    return false;
+
+  };
+
+  findSolution(solution, 0);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  return solution.rows();
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solution = undefined;
+  var emptyBoard = new Board({n: n});
+  var solutionCount = 0;
+
+
+  var findSolution = function(board, row) {
+    //console.log('test', board.rows());
+    if (row === n) {
+      solutionCount++;
+      return;
+    }
+
+
+    for (var x = 0; x < n; x++) {
+      board.togglePiece(row, x);
+      if (!(board.hasAnyQueensConflicts())) {
+        findSolution(board, row + 1);
+      }
+
+      board.togglePiece(row, x);
+
+    }
+  };
+  findSolution(emptyBoard, 0);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
@@ -128,3 +178,32 @@ window.countNQueensSolutions = function(n) {
 //     }
 //   }
 // };
+
+var helperFunction = function (board, piecesPlaced, startX, startY) {
+  debugger;
+  var newBoard = board;
+  for (var y = 0; y < newBoard.attributes.n; y++) {
+    for (var x = 0; x < newBoard.attributes.n; x++) {
+      if (newBoard.attributes[y][x] === 0) {
+        newBoard.togglePiece(y, x);
+
+        if (!(newBoard.hasAnyQueensConflicts())) {
+
+          if (piecesPlaced + 1 === newBoard.attributes.n) {
+            return newBoard;
+          }
+          if ((helperFunction(newBoard, piecesPlaced + 1, x, y) !== false)) {
+            return helperFunction(newBoard, piecesPlaced + 1, x, y);
+          }
+        } else {
+          newBoard.togglePiece(y, x);
+        }
+      }
+    }
+  }
+
+  if (piecesPlaced !== newBoard.attributes.n) {
+    return false;
+  }
+
+};
