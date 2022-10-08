@@ -1,0 +1,17 @@
+Optimize the time and/or space complexity of your solvers. Here are some ideas:
+
+  Consider the memory usage of your solver:
+    Do you have to allocate and duplicate an entire board?
+      No, we only create one board.
+    Can you re-use the board?
+      Yes. Our algorithm does all its work on one board and can even find all the possible solutions on that one board
+    Can you get by with less information?
+      I don't think we understand the question.
+
+
+  Consider what work you can avoid doing:
+    Are you doing any work early in the algorithm that you can tell will be fruitless?
+      At first we tried to make a helper function called generate solution to help us solve the problem, but in the end it never helped us and it took a lot of our time.
+    How much work do you do on paths which are obviously wrong?
+      We put a lot of work on our first solution of the problem and we finally realized after hours of hard work, that the first solution was never gonna work out.
+      We think if we had read the documentation more, solving the problem would've been a lot easier and we would've had a better sense of direction on how to solve the problem.
